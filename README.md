@@ -27,3 +27,9 @@ node --check negocio.js
 node --check app.js
 curl --fail http://127.0.0.1:8000/
 ```
+
+## Ejemplo de cafetería interactiva
+
+La demostración Miga & Grano incluye ilustraciones de productos, filtros del menú, recomendaciones por antojo, preguntas desplegables y una selección de productos con cantidades y total en MXN. La selección vive solo en la pestaña actual; no envía pedidos, almacena datos ni realiza cobros. El menú y el negocio son ficticios.
+
+Las animaciones respetan la preferencia de movimiento reducido del dispositivo. No se requieren imágenes remotas ni bibliotecas externas.

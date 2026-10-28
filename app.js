@@ -19,7 +19,22 @@ negocio.servicios.forEach((service, index) => {
   const price = document.createElement('strong');
   price.className = 'price';
   price.textContent = service.precio;
-  card.append(number, heading, description, price);
+  const visual = document.createElement('div');
+  visual.className = 'product-art product-' + index;
+  visual.setAttribute('aria-hidden', 'true');
+  visual.innerHTML = service.categoria === 'pan'
+    ? '<div class="pastry">' + (index === 4 ? '🥐' : '🌀') + '</div><span class="art-caption">DEL HORNO A TU MESA</span>'
+    : '<div class="drink"><i></i><span>m&g</span></div><span class="art-caption">UN MOMENTO PARA TI</span>';
+  const add = document.createElement('button');
+  add.type = 'button';
+  add.className = 'add-product';
+  add.textContent = 'Agregar +';
+  add.setAttribute('aria-label', 'Agregar ' + service.nombre);
+  add.addEventListener('click', () => updateCart(index, 1));
+  const bottom = document.createElement('div');
+  bottom.className = 'product-bottom';
+  bottom.append(price, add);
+  card.append(visual, number, heading, description, bottom);
   document.getElementById('service-list').append(card);
 });
 negocio.ventajas.forEach(value => {
@@ -61,3 +76,51 @@ if ('IntersectionObserver' in window && !reducedMotion.matches) {
     observer.observe(section);
   });
 }
+
+const cart = new Map();
+const money = value => '$' + value + ' MXN';
+const unitPrice = item => Number(item.precio.replace(/[^0-9.]/g, ''));
+let toastTimer;
+function updateCart(index, change) {
+  const quantity = Math.max(0, (cart.get(index) || 0) + change);
+  if (quantity) cart.set(index, quantity); else cart.delete(index);
+  renderCart();
+  if (change > 0) {
+    setText('toast', negocio.servicios[index].nombre + ' agregado a tu selección');
+    document.getElementById('toast').classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => document.getElementById('toast').classList.remove('show'), 2500);
+  }
+}
+function renderCart() {
+  const list = document.getElementById('cart-items');
+  list.replaceChildren();
+  let total = 0, count = 0;
+  cart.forEach((quantity, index) => {
+    const item = negocio.servicios[index];
+    total += unitPrice(item) * quantity;
+    count += quantity;
+    const row = document.createElement('div'); row.className = 'cart-row';
+    const label = document.createElement('p'); label.textContent = item.nombre + ' · ' + money(unitPrice(item) * quantity);
+    const controls = document.createElement('div'); controls.className = 'quantity';
+    const minus = document.createElement('button'); minus.type = 'button'; minus.textContent = '−'; minus.setAttribute('aria-label', 'Quitar uno de ' + item.nombre);
+    const plus = document.createElement('button'); plus.type = 'button'; plus.textContent = '+'; plus.setAttribute('aria-label', 'Añadir uno de ' + item.nombre);
+    minus.addEventListener('click', () => { updateCart(index, -1); const next = list.querySelector('button'); (next || document.getElementById('cart-close')).focus(); });
+    plus.addEventListener('click', () => { updateCart(index, 1); const buttons = list.querySelectorAll('button'); const position = [...cart.keys()].indexOf(index) * 2 + 1; buttons[position]?.focus(); });
+    const value = document.createElement('span'); value.textContent = quantity;
+    controls.append(minus, value, plus); row.append(label, controls); list.append(row);
+  });
+  if (!count) { const empty = document.createElement('p'); empty.textContent = 'Tu pausa está por empezar. Agrega algo rico del menú.'; list.append(empty); }
+  setText('cart-count', count); setText('cart-total', money(total));
+  document.getElementById('cart-clear').disabled = !count;
+}
+const cartDialog = document.getElementById('cart-dialog');
+document.getElementById('cart-open').addEventListener('click', () => cartDialog.showModal());
+document.getElementById('cart-close').addEventListener('click', () => cartDialog.close());
+document.getElementById('cart-clear').addEventListener('click', () => { cart.clear(); renderCart(); setText('cart-message', 'Selección vaciada.'); });
+const recommendations = { energia: 'Espresso + croissant · Una pareja clásica para empezar bien.', fresco: 'Cold brew + croissant · Una pausa fresca y crujiente.', dulce: 'Latte de la casa + rol de canela · Un abrazo en forma de merienda.' };
+document.querySelectorAll('[data-mood]').forEach(button => button.addEventListener('click', () => {
+  document.querySelectorAll('[data-mood]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+  setText('recommendation', recommendations[button.dataset.mood]);
+}));
+renderCart();
