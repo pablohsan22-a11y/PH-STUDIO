@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Cafetería de demostración: café de especialidad y pan recién hecho.">
+  <title>Miga &amp; Grano | Cafetería</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="negocio.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="container header">
+    <a class="brand" href="#inicio" data-name>Miga &amp; Grano</a>
+    <nav aria-label="Navegación principal"><a href="#servicios">Menú</a><a href="#nosotros">Nosotros</a><a href="#contacto">Contacto</a></nav>
+  </header>
+  <main>
+    <section class="container hero" id="inicio">
+      <div><p class="eyebrow" id="category"></p><h1 id="headline"></h1><p class="intro" id="description"></p><a class="button" href="#servicios">Explora el menú <span aria-hidden="true">↗</span></a></div>
+      <div class="hero-card"><span class="badge">TU PAUSA FAVORITA</span><div class="coffee-scene" aria-hidden="true"><div class="steam"><i></i><i></i><i></i></div><div class="cup"><span>m&amp;g</span></div><div class="saucer"></div></div><p id="promise"></p><span class="card-note">Preparado con calma. Disfrutado sin prisa.</span></div>
+    </section>
+    <section class="services section" id="servicios"><div class="container"><p class="eyebrow">ALGO RICO TE ESPERA</p><h2>¿Qué se te antoja hoy?</h2><p class="menu-note">Menú y precios ilustrativos en MXN.</p><div class="filters" role="group" aria-label="Filtrar menú"><button type="button" data-filter="todos" aria-pressed="true">Todo</button><button type="button" data-filter="cafe" aria-pressed="false">Café caliente</button><button type="button" data-filter="frias" aria-pressed="false">Bebidas frías</button><button type="button" data-filter="pan" aria-pressed="false">Panadería</button></div><p id="menu-status" class="sr-only" role="status"></p><div class="grid" id="service-list"></div></div></section>
+    <section class="container section about" id="nosotros"><div><p class="eyebrow">CONÓCENOS</p><h2>Las mejores historias empiezan con un café.</h2></div><div><p id="about"></p><ul id="benefits"></ul></div></section>
+    <section class="container section" id="contacto"><div class="contact"><div><p class="eyebrow">GUÁRDANOS UN RATITO</p><h2>Nos vemos en tu próxima pausa.</h2><p id="location"></p><p id="hours"></p></div><div><a class="button" id="whatsapp" hidden target="_blank" rel="noopener noreferrer">Escríbenos por WhatsApp ↗</a><p id="contact-placeholder">Sitio de demostración · Este negocio es ficticio.</p></div></div></section>
+  </main>
+  <footer class="container footer"><span class="demo-label">DEMO · CAFETERÍA FICTICIA</span><span>© <span id="year"></span> <span data-name></span></span><a href="#inicio">Volver arriba ↑</a></footer>
+</body>
+</html>
