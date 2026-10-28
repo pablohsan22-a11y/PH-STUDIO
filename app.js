@@ -23,7 +23,7 @@ negocio.servicios.forEach((service, index) => {
   visual.className = 'product-art product-' + index;
   visual.setAttribute('aria-hidden', 'true');
   visual.innerHTML = service.categoria === 'pan'
-    ? '<div class="pastry">' + (index === 4 ? '🥐' : '🌀') + '</div><span class="art-caption">DEL HORNO A TU MESA</span>'
+    ? '<div class="pastry"><i></i><i></i><i></i></div><span class="art-caption">HORNEADO CON CALMA</span>'
     : '<div class="drink"><i></i><span>m&g</span></div><span class="art-caption">UN MOMENTO PARA TI</span>';
   const add = document.createElement('button');
   add.type = 'button';
